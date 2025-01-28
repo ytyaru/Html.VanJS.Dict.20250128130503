@@ -150,13 +150,34 @@ window.addEventListener('DOMContentLoaded', (event) => {
     a.e(TypeError, `キー配列は配列型であるべきです。要素が一つ以上あるべきです。要素であるキーは文字列であるべきです。:0`, ()=>Dict.hasSome(Dict.new(), 0))
     a.e(TypeError, `キー配列は配列型であるべきです。要素が一つ以上あるべきです。要素であるキーは文字列であるべきです。:0`, ()=>Dict.hasSome(Dict.new(), [0]))
 
-
-
-
-
+    // Dict.keys() 順序が挿入順に保障されない！名前順にソートされているっぽい。ブラウザ実装によって変わりそう。
     a.t(()=>{
         const d = Dict.new();
-        Object.setPrototypeOf(d, {'k':{value:'v'}})
+        const keys = Dict.keys(d)
+        return Array.isArray(keys) && 0===keys.length
+    })
+    a.t(()=>{
+        const d = Dict.new({k:'v'});
+        const keys = Dict.keys(d)
+        return Array.isArray(keys) && 1===keys.length && 'k'===keys[0]
+    })
+    a.t(()=>{
+        const d = Dict.new({k:'v',n:1});
+        const keys = Dict.keys(d)
+        return Array.isArray(keys) && 2===keys.length && 'k'===keys[0] && 'n'===keys[1]
+    })
+    a.t(()=>{
+        const d = Dict.new({k:'v',n:1,0:'zero'});
+        const keys = Dict.keys(d)
+        console.log(keys[2], '0'===keys[2], keys) // 挿入された順ではなく文字列で並び替えた順になるっぽい？
+        //return Array.isArray(keys) && 3===keys.length && 'k'===keys[0] && 'n'===keys[1] && '0'===keys[2]
+        return Array.isArray(keys) && 3===keys.length && 'k' in d && 'n' in d && '0' in d
+    })
+
+    // プロトタイプを付加されても無視することを確認する（ただし組込in句は参照してしまう）
+    a.t(()=>{
+        const d = Dict.new();
+        Object.setPrototypeOf(d, {k:{value:'v'}})
         const p = Object.getPrototypeOf(d)
         return !Dict.has(d, 'k') && 'k' in d
     })

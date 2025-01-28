@@ -67,4 +67,5 @@ class Dict {
     */
 }
 window.Dict = new Dict();
+//window.Dict = Object.freeze(new Dict());
 })();
