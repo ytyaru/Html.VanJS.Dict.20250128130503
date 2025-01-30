@@ -13,15 +13,21 @@ window.addEventListener('DOMContentLoaded', (event) => {
     a.t(()=>{ // 空の辞書オブジェクトを返す
         const d = Dict.new(); // 第一引数にundefinedを渡したのと同じ
         const noneKeys = 0===Object.getOwnPropertyNames(d).length
-        const nonePrototype = null===Object.getPrototypeOf(d)
-        return noneKeys && nonePrototype 
+        console.log('toString' in d)
+        console.log('constructor' in d)
+        return noneKeys
+//        const nonePrototype = null===Object.getPrototypeOf(d)
+//        console.log(noneKeys, nonePrototype )
+//        return noneKeys && nonePrototype 
     })
     a.t(()=>{
         const d = Dict.new({k:'v'});
         const keys = Object.getOwnPropertyNames(d)
         const vals = keys.map(k=>d[k])
-        const nonePrototype = null===Object.getPrototypeOf(d)
-        return 1===keys.length && 1===vals.length && 'k'===keys[0] && 'v'===vals[0] && nonePrototype 
+        //console.log(keys, vals, nonePrototype )
+//        const nonePrototype = null===Object.getPrototypeOf(d)
+//        return 1===keys.length && 1===vals.length && 'k'===keys[0] && 'v'===vals[0] && nonePrototype 
+        return 1===keys.length && 1===vals.length && 'k'===keys[0] && 'v'===vals[0]
     })
     a.t(()=>{
         const d = Dict.new({k:'v',n:1});
@@ -50,25 +56,43 @@ window.addEventListener('DOMContentLoaded', (event) => {
             && 'n'===keys[1] && 1===vals[1]
             && nonePrototype 
     })
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:null`, ()=>Dict.new([[null,'v']]))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:0`, ()=>Dict.new([[0,'v']]))
+    a.e(TypeError, `Dict.newの第一引数はundefined,null,オブジェクト,配列,二次元配列,文字列のみ有効です。{key:'value',...},[key1,key2,...],[[key,value],...],'key1 key2'`, ()=>Dict.new([['k']]))
+    a.e(TypeError, `Dict.newの第一引数はundefined,null,オブジェクト,配列,二次元配列,文字列のみ有効です。{key:'value',...},[key1,key2,...],[[key,value],...],'key1 key2'`, ()=>Dict.new([[0]]))
+    a.e(TypeError, `Dict.newの第一引数はundefined,null,オブジェクト,配列,二次元配列,文字列のみ有効です。{key:'value',...},[key1,key2,...],[[key,value],...],'key1 key2'`, ()=>Dict.new([[]]))
     a.t(()=>{
-        const d = Dict.new(['k','v']);
+        //const d = Dict.new(['k','v']);
+        const d = Dict.new(['k']);
         console.log(d)
         const keys = Object.getOwnPropertyNames(d)
         const vals = keys.map(k=>d[k])
-        const nonePrototype = null===Object.getPrototypeOf(d)
-        return 1===keys.length && 1===vals.length && 'k'===keys[0] && 'v'===vals[0] && nonePrototype 
+        console.log(keys, vals, d)
+        return 1===keys.length && 1===vals.length && 'k'===keys[0] && null===vals[0]
+//        const nonePrototype = null===Object.getPrototypeOf(d)
+//        return 1===keys.length && 1===vals.length && 'k'===keys[0] && 'v'===vals[0] && nonePrototype 
     })
     a.t(()=>{
-        const d = Dict.new(['k','v','n',1]);
+        //const d = Dict.new(['k','v']);
+        const d = Dict.new(['k1','k2']);
         console.log(d)
         const keys = Object.getOwnPropertyNames(d)
         const vals = keys.map(k=>d[k])
-        const nonePrototype = null===Object.getPrototypeOf(d)
-        return 2===keys.length && 2===vals.length
-            && 'k'===keys[0] && 'v'===vals[0]
-            && 'n'===keys[1] && 1===vals[1]
-            && nonePrototype 
+        console.log(keys, vals, d)
+        return 2===keys.length && 2===vals.length && 'k1'===keys[0] && 'k2'===keys[1] && vals.every(v=>v===null)
+//        const nonePrototype = null===Object.getPrototypeOf(d)
+//        return 1===keys.length && 1===vals.length && 'k'===keys[0] && 'v'===vals[0] && nonePrototype 
     })
+    a.t(()=>{// 空の辞書
+        const d = Dict.new([]);
+        console.log(d)
+        const keys = Object.getOwnPropertyNames(d)
+        const vals = keys.map(k=>d[k])
+        console.log(keys, vals, d)
+        return 0===keys.length && 0===vals.length
+    })
+    a.e(TypeError, `Dict.newの第一引数はundefined,null,オブジェクト,配列,二次元配列,文字列のみ有効です。{key:'value',...},[key1,key2,...],[[key,value],...],'key1 key2'`, ()=>Dict.new([null]))
+    a.e(TypeError, `Dict.newの第一引数はundefined,null,オブジェクト,配列,二次元配列,文字列のみ有効です。{key:'value',...},[key1,key2,...],[[key,value],...],'key1 key2'`, ()=>Dict.new([0]))
     a.t(()=>{
         //for (let value of [undefined, null, NaN, Infinity, '', 0]) { // 不正値を渡す
         for (let value of [undefined, null]) { // 空オブジェクトを意味する値を渡す
@@ -80,15 +104,28 @@ window.addEventListener('DOMContentLoaded', (event) => {
         return true
     })
     a.t(()=>{
+        const d = Dict.new('k')
+        const keys = Object.getOwnPropertyNames(d)
+        const vals = keys.map(k=>d[k])
+        return 1===keys.length && 1===vals.length && 'k'===keys[0] && null===vals[0]
+    })
+    /*
+    a.t(()=>{
         const d = Dict.new({0:'v'}); // キーは整数型だが勝手に文字列型になる。JavaScriptの仕様。型例外発生させたいが不可能。
         const keys = Object.getOwnPropertyNames(d)
         const vals = keys.map(k=>d[k])
         const nonePrototype = null===Object.getPrototypeOf(d)
         return 1===keys.length && 1===vals.length && '0'===keys[0] && 'v'===vals[0] && nonePrototype && 'v'===d['0']
     })
+    */
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:0`, ()=>Dict.new({0:'v'}))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:0`, ()=>Dict.new('0'))
+
     // Dict.new() 異常系
-    for (let value of [NaN, Infinity, 0, '']) { // 不正値を渡す
-        a.e(TypeError, `Dict.new()の第一引数はundefined、null、オブジェクト、配列、二次元配列のみ有効です。{key:value,...}, [key,value,...], [[key,value],...]`, ()=>Dict.new(value))
+    //for (let value of [NaN, Infinity, 0, '']) { // 不正値を渡す
+    for (let value of [NaN, Infinity, 0]) { // 不正値を渡す
+        a.e(TypeError, `Dict.newの第一引数はundefined,null,オブジェクト,配列,二次元配列,文字列のみ有効です。{key:'value',...},[key1,key2,...],[[key,value],...],'key1 key2'`, ()=>Dict.new(value))
+        //a.e(TypeError, `Dict.new()の第一引数はundefined、null、オブジェクト、配列、二次元配列のみ有効です。{key:value,...}, [key,value,...], [[key,value],...]`, ()=>Dict.new(value))
     }
     // Dict.has()
     a.t(()=>{
@@ -108,6 +145,111 @@ window.addEventListener('DOMContentLoaded', (event) => {
     })
     a.e(TypeError, `キーは文字列であるべきです。:0:number`, ()=>Dict.has(Dict.new(), 0))
     a.e(TypeError, `キーは文字列であるべきです。:k:object`, ()=>Dict.has(Dict.new(), ['k']))
+
+    // 未定義キーを参照すると例外発生する
+    a.e(TypeError, `指定されたキーは辞書に存在しません。:x`, ()=>{
+        const d = Dict.new()
+        d.x
+    })
+    // 未定義キーに代入すると例外発生する
+    a.e(TypeError, `指定されたキーは辞書に存在しません。:x`, ()=>{
+        const d = Dict.new()
+        d.x = 'X'
+    })
+    // 参照できること
+    a.t(()=>{
+        const d = Dict.new({k:'v'})
+        return Object.prototype.hasOwnProperty.call(d,'k') && 'v'===d.k
+    })
+    a.t(()=>{
+        const d = Dict.new([['k','v']])
+        return Object.prototype.hasOwnProperty.call(d,'k') && 'v'===d.k
+    })
+    a.t(()=>{
+        const d = Dict.new(['k'])
+        return Object.prototype.hasOwnProperty.call(d,'k') && null===d.k
+    })
+    a.t(()=>{
+        const d = Dict.new('k')
+        return Object.prototype.hasOwnProperty.call(d,'k') && null===d.k
+    })
+    // 代入できること（辞書オブジェクト自身から既存のキーに対して値変更ができること）
+    a.t(()=>{
+        const d = Dict.new({k:'v'})
+        d.k = 'x'
+        return Object.prototype.hasOwnProperty.call(d,'k') && 'x'===d.k
+    })
+    a.t(()=>{
+        const d = Dict.new([['k','v']])
+        d.k = 'x'
+        return Object.prototype.hasOwnProperty.call(d,'k') && 'x'===d.k
+    })
+    a.t(()=>{
+        const d = Dict.new(['k'])
+        d.k = 'x'
+        return Object.prototype.hasOwnProperty.call(d,'k') && 'x'===d.k
+    })
+    a.t(()=>{
+        const d = Dict.new('k')
+        d.k = 'x'
+        return Object.prototype.hasOwnProperty.call(d,'k') && 'x'===d.k
+    })
+    // Dict.add（キーを新規追加できること）
+    a.t(()=>{
+        const d = Dict.new()
+        Dict.add(d, 'x', 'X')
+        const keys = Object.getOwnPropertyNames(d)
+        const vals = keys.map(k=>d[k])
+        return 1===keys.length && 1===vals.length && 'x'===keys[0] && 'X'===vals[0]
+    })
+    // 既存キーを削除できること
+    a.t(()=>{
+        const d = Dict.new({k:'v'})
+        delete d.k
+        return !Object.prototype.hasOwnProperty.call(d,'k')
+    })
+    a.t(()=>{
+        const d = Dict.new([['k','v']])
+        delete d.k
+        return !Object.prototype.hasOwnProperty.call(d,'k')
+    })
+    a.t(()=>{
+        const d = Dict.new(['k'])
+        delete d.k
+        return !Object.prototype.hasOwnProperty.call(d,'k')
+    })
+    a.t(()=>{
+        const d = Dict.new('k')
+        delete d.k
+        return !Object.prototype.hasOwnProperty.call(d,'k')
+    })
+    // 追加キーを削除できること
+    a.t(()=>{
+        const d = Dict.new()
+        Dict.add(d, 'x', 'X')
+        delete d.x
+        return !Object.prototype.hasOwnProperty.call(d,'x')
+    })
+    a.t(()=>{
+        const d = Dict.new()
+        Dict.add(d, 'x', 'X')
+        Dict.add(d, 'y', 'Y')
+        delete d.x
+        console.log(Dict.keysAry(d))
+        return !Object.prototype.hasOwnProperty.call(d,'x')
+            &&  Object.prototype.hasOwnProperty.call(d,'y') && 1===Dict.keysAry(d).length && 'y'===Dict.keysAry(d)[0]
+    })
+    a.t(()=>{
+        const d = Dict.new()
+        Dict.add(d, 'x', 'X')
+        Dict.add(d, 'y', 'Y')
+        delete d.y
+        console.log(Dict.keysAry(d))
+        return  Object.prototype.hasOwnProperty.call(d,'x')
+            && !Object.prototype.hasOwnProperty.call(d,'y') && 1===Dict.keysAry(d).length && 'x'===Dict.keysAry(d)[0]
+    })
+
+
 
 
     // Dict.hasEvery()
