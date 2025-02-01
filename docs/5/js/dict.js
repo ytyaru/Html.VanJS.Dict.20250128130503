@@ -51,7 +51,6 @@ class Dict {
     }
     static #makeHandler() { return {
         get(dict, key, receiver) {
-            console.log(`Handler.get():`, dict, key, receiver)
             Dict.throwHas(dict, key)
             Dict.throwValidKey(key)
             return dict[key]
@@ -151,7 +150,6 @@ class Dict {
     static isSame(...dicts) {return this.#isSame(false, ...dicts)}
     static isSameKey(...dicts) {return this.#isSame(true, ...dicts)}
     static #isSame(isKeyOnly=false, ...dicts) {
-        console.log(dicts)
         if (dicts.length < 2){throw new TypeError(`Dict.isSame${isKeyOnly ? 'Key' : ''}は比較する二つ以上のDictが必要です。`)}
         const keys = this.keysAry(dicts[0])
         for (let i=1; i<dicts.length; i++) {
@@ -171,7 +169,7 @@ class BlankObject {
         else if (Array.isArray(obj) && 0===(obj.length % 2)){return this.#makePropObjFromAry(obj)}
         else if (this.#isObj(obj)){return this.#makePropObjFromObj(obj)}
         else if (undefined===obj || null===obj){return undefined}
-        else {console.log(obj);throw new TypeError(`Dict.new()の第一引数はundefined、null、オブジェクト、配列、二次元配列のみ有効です。{key:value,...}, [key,value,...], [[key,value],...]`)}
+        else {throw new TypeError(`Dict.new()の第一引数はundefined、null、オブジェクト、配列、二次元配列のみ有効です。{key:value,...}, [key,value,...], [[key,value],...]`)}
     }
     static #makePropObjFromArys(arys) {return arys.reduce((obj,[k,v])=>{this.#throwKey(k);return Object.assign(obj,{[k]:this.#getDescriptor(v)})}, Object.create(null))}
     static #makePropObjFromAry(ary) {

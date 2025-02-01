@@ -58,6 +58,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
     })
     a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:null`, ()=>Dict.new([[null,'v']]))
     a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:0`, ()=>Dict.new([[0,'v']]))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:_`, ()=>Dict.new([['_','v']]))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。: `, ()=>Dict.new([[' ','v']]))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:*`, ()=>Dict.new([['*','v']]))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:=`, ()=>Dict.new([['=','v']]))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:あ`, ()=>Dict.new([['あ','v']]))
     a.e(TypeError, `Dict.newの第一引数はundefined,null,オブジェクト,配列,二次元配列,文字列のみ有効です。{key:'value',...},[key1,key2,...],[[key,value],...],'key1 key2'`, ()=>Dict.new([['k']]))
     a.e(TypeError, `Dict.newの第一引数はundefined,null,オブジェクト,配列,二次元配列,文字列のみ有効です。{key:'value',...},[key1,key2,...],[[key,value],...],'key1 key2'`, ()=>Dict.new([[0]]))
     a.e(TypeError, `Dict.newの第一引数はundefined,null,オブジェクト,配列,二次元配列,文字列のみ有効です。{key:'value',...},[key1,key2,...],[[key,value],...],'key1 key2'`, ()=>Dict.new([[]]))
@@ -120,6 +125,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
     */
     a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:0`, ()=>Dict.new({0:'v'}))
     a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:0`, ()=>Dict.new('0'))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:`, ()=>Dict.new(''))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:`, ()=>Dict.new(' '))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:_`, ()=>Dict.new('_'))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:*`, ()=>Dict.new('*'))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:=`, ()=>Dict.new('='))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:あ`, ()=>Dict.new('あ'))
 
     // Dict.new() 異常系
     //for (let value of [NaN, Infinity, 0, '']) { // 不正値を渡す
@@ -279,6 +290,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
     a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:0`, ()=>Dict.hasEvery(Dict.new(), [0]))
     a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:0`, ()=>Dict.hasEvery(Dict.new(), ['0']))
     a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:_`, ()=>Dict.hasEvery(Dict.new(), ['_']))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:`, ()=>Dict.hasEvery(Dict.new(), ['']))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。: `, ()=>Dict.hasEvery(Dict.new(), [' ']))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:*`, ()=>Dict.hasEvery(Dict.new(), ['*']))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:=`, ()=>Dict.hasEvery(Dict.new(), ['=']))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:あ`, ()=>Dict.hasEvery(Dict.new(), ['あ']))
 
     // Dict.hasSome()
     a.t(()=>{
@@ -307,6 +323,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
     a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:0`, ()=>Dict.hasSome(Dict.new(), [0]))
     a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:0`, ()=>Dict.hasSome(Dict.new(), ['0']))
     a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:_`, ()=>Dict.hasSome(Dict.new(), ['_']))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:`, ()=>Dict.hasSome(Dict.new(), ['']))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。: `, ()=>Dict.hasSome(Dict.new(), [' ']))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:*`, ()=>Dict.hasSome(Dict.new(), ['*']))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:=`, ()=>Dict.hasSome(Dict.new(), ['=']))
+    a.e(TypeError, `指定されたキーは無効値です。文字列型かつ正規表現/^[a-zA-Z][_a-zA-Z0-9]$/に一致させてください。:あ`, ()=>Dict.hasSome(Dict.new(), ['あ']))
 
     // Dict.keys() イテレータである。順序が挿入順に保障されない！名前順にソートされているっぽい。ブラウザ実装によって変わりそう。
     a.t(()=>{
